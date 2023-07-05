@@ -1,0 +1,50 @@
+﻿<Window x:Class="Entity_Car_Galery_HW.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Entity_Car_Galery_HW"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="470" Width="820" WindowStartupLocation="CenterScreen" Icon="ico.png">
+    <Grid Background="#222222">
+
+        <TextBox x:Name="CarMake" HorizontalAlignment="Left" Margin="471,43,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="305" Height="30" TextChanged="CarMake_TextChanged"></TextBox>
+
+        <TextBox x:Name="CarModel" HorizontalAlignment="Left" Margin="471,124,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="305" Height="30" TextChanged="CarModel_TextChanged"></TextBox>
+
+        <TextBox x:Name="CarYear" HorizontalAlignment="Left" Margin="471,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="305" Height="30" TextChanged="CarYear_TextChanged"></TextBox>
+
+        <TextBox x:Name="CarStNumber" HorizontalAlignment="Left" Margin="471,281,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="305" Height="30" TextChanged="CarStNumber_TextChanged"></TextBox>
+
+
+
+        <Label Foreground="White" FontWeight="DemiBold" Content="Make" HorizontalAlignment="Left" Margin="409,45,0,0" VerticalAlignment="Top"></Label>
+
+        <Label Foreground="White" FontWeight="DemiBold" Content="Model" HorizontalAlignment="Left" Margin="409,121,0,0" VerticalAlignment="Top"></Label>
+
+        <Label Foreground="White" FontWeight="DemiBold" Content="Year" HorizontalAlignment="Left" Margin="415,0,0,0" VerticalAlignment="Center"></Label>
+
+        <Label Foreground="White" FontWeight="DemiBold" Content="St, number" HorizontalAlignment="Left" Margin="394,281,0,0" VerticalAlignment="Top"></Label>
+
+
+
+        <Button x:Name="AddButton" BorderThickness="0" FontWeight="DemiBold" Background="White" Content="Add" HorizontalAlignment="Left" Margin="471,370,0,0" VerticalAlignment="Top" Height="32" Width="95" Click="Add_Button"></Button>
+
+        <Button x:Name="UpdateButton" BorderThickness="0" FontWeight="DemiBold" Background="White" Content="Update" HorizontalAlignment="Left" Margin="576,370,0,0" VerticalAlignment="Top" Height="32" Width="95" Click="Update_Button"></Button>
+
+        <Button x:Name="DeleteButton" BorderThickness="0" FontWeight="DemiBold" Background="White" Content="Delete" HorizontalAlignment="Left" Margin="681,370,0,0" VerticalAlignment="Top" Height="32" Width="95" Click="Delete_Button"></Button>
+
+        <ListView FontWeight="DemiBold" x:Name="CarsList" Margin="10,10,431,10" Height="NaN" Width="NaN" SelectionChanged="Cars_SelectionChanged">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Mark" DisplayMemberBinding="{Binding Mark}"/>
+                    <GridViewColumn Header="Model" DisplayMemberBinding="{Binding Model}" />
+                    <GridViewColumn Header="Year" DisplayMemberBinding="{Binding Year}" />
+                    <GridViewColumn Header="St.Number" DisplayMemberBinding="{Binding StNumber}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+
+    </Grid>
+</Window>
