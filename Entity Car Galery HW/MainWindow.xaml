@@ -8,33 +8,22 @@
         Title="MainWindow" Height="470" Width="820" WindowStartupLocation="CenterScreen" Icon="ico.png">
     <Grid Background="#222222">
 
-        <TextBox x:Name="CarMake" HorizontalAlignment="Left" Margin="471,43,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="305" Height="30" TextChanged="CarMake_TextChanged"></TextBox>
+        <Label FontWeight="DemiBold" Foreground="WhiteSmoke" Content="Mark" Margin="400,62,340,352" Height="40" Width="80" FontSize="20"></Label>
+        <Label FontWeight="DemiBold" Foreground="WhiteSmoke" Content="Model" Margin="400,152,340,262" Height="40" Width="80" FontSize="20"></Label>
+        <Label FontWeight="DemiBold" Foreground="WhiteSmoke" Content="Year" Margin="400,247,340,167" Height="40" Width="80" FontSize="20"></Label>
+        <Label FontWeight="DemiBold" Foreground="WhiteSmoke" Content="St.Number" Margin="385,324,325,90" Height="40" Width="110" FontSize="20"></Label>
 
-        <TextBox x:Name="CarModel" HorizontalAlignment="Left" Margin="471,124,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="305" Height="30" TextChanged="CarModel_TextChanged"></TextBox>
+        <TextBox x:Name="TbMark" Margin="495,62,25,352" Height="40" Width="300" FontSize="23" BorderThickness="0"  ></TextBox>
+        <TextBox x:Name="TbModel" Margin="495,152,25,262" Height="40" Width="300" FontSize="23" BorderThickness="0" ></TextBox>
+        <TextBox x:Name="TbYear" Margin="495,247,25,167" Height="40" Width="300" FontSize="23" BorderThickness="0" ></TextBox>
+        <TextBox x:Name="TbStNumber" Margin="495,324,25,90" Height="40" Width="300" FontSize="23" BorderThickness="0" ></TextBox>
 
-        <TextBox x:Name="CarYear" HorizontalAlignment="Left" Margin="471,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="305" Height="30" TextChanged="CarYear_TextChanged"></TextBox>
-
-        <TextBox x:Name="CarStNumber" HorizontalAlignment="Left" Margin="471,281,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="305" Height="30" TextChanged="CarStNumber_TextChanged"></TextBox>
-
-
-
-        <Label Foreground="White" FontWeight="DemiBold" Content="Make" HorizontalAlignment="Left" Margin="409,45,0,0" VerticalAlignment="Top"></Label>
-
-        <Label Foreground="White" FontWeight="DemiBold" Content="Model" HorizontalAlignment="Left" Margin="409,121,0,0" VerticalAlignment="Top"></Label>
-
-        <Label Foreground="White" FontWeight="DemiBold" Content="Year" HorizontalAlignment="Left" Margin="415,0,0,0" VerticalAlignment="Center"></Label>
-
-        <Label Foreground="White" FontWeight="DemiBold" Content="St, number" HorizontalAlignment="Left" Margin="394,281,0,0" VerticalAlignment="Top"></Label>
+        <Button Background="WhiteSmoke" FontWeight="DemiBold" BorderThickness="0" x:Name="BtnAdd" Content="Add" Margin="440,404,280,10" Height="40" Width="100" FontSize="20" Click="AddButton_Click"></Button>
+        <Button Background="WhiteSmoke" FontWeight="DemiBold" BorderThickness="0" x:Name="BtnUpdate" Content="Update" Margin="577,404,143,10" Height="40" Width="100" FontSize="20" Click="BtnUpdate_Click" ></Button>
+        <Button Background="WhiteSmoke" FontWeight="DemiBold" BorderThickness="0" x:Name="BtnDelete" Content="Delete" Margin="710,404,10,10" Height="40" Width="100" FontSize="20" Click="BtnDelete_Click"></Button>
 
 
-
-        <Button x:Name="AddButton" BorderThickness="0" FontWeight="DemiBold" Background="White" Content="Add" HorizontalAlignment="Left" Margin="471,370,0,0" VerticalAlignment="Top" Height="32" Width="95" Click="Add_Button"></Button>
-
-        <Button x:Name="UpdateButton" BorderThickness="0" FontWeight="DemiBold" Background="White" Content="Update" HorizontalAlignment="Left" Margin="576,370,0,0" VerticalAlignment="Top" Height="32" Width="95" Click="Update_Button"></Button>
-
-        <Button x:Name="DeleteButton" BorderThickness="0" FontWeight="DemiBold" Background="White" Content="Delete" HorizontalAlignment="Left" Margin="681,370,0,0" VerticalAlignment="Top" Height="32" Width="95" Click="Delete_Button"></Button>
-
-        <ListView FontWeight="DemiBold" x:Name="CarsList" Margin="10,10,431,10" Height="NaN" Width="NaN" SelectionChanged="Cars_SelectionChanged">
+        <ListView x:Name="Cars" Margin="10,10,435,10" BorderThickness="3" ItemsSource="{Binding cars}" SelectionChanged="Cars_SelectionChanged">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Mark" DisplayMemberBinding="{Binding Mark}"/>

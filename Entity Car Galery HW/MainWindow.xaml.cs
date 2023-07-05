@@ -21,140 +21,164 @@ using System.Windows.Shapes;
 namespace Entity_Car_Galery_HW
 {
 
-
-
-    class Cars
+    public class Car
     {
         public int Id { get; set; }
-        public string? Make { get; set; }
-        public string? Model { get; set; }
-        public string? Year { get; set; }
-        public string? StNumber { get; set; }
+        public string Mark { get; set; }
+        public string Model { get; set; }
+        public int Year { get; set; }
+        public int StNumber { get; set; }
+
+        public override string ToString() => $"{Id} {Mark} {Model} {Year} {StNumber}";
     }
 
-    class CarsContext : DbContext
-    {
-        public DbSet<Cars> car { get; set; }
 
-        public CarsContext()
+    public class CarDbContext : DbContext
+    {
+        public DbSet<Car> Cars { get; set; }
+        public CarDbContext()
         {
             Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //base.OnConfiguring(optionsBuilder);
-
             optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Database=CarGalery;Integrated Security=True;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=True");
         }
     }
 
+
     public partial class MainWindow : Window
     {
-
-        CarsContext CarContext = new CarsContext();
-        public ObservableCollection<Cars> Cars { get; set; }
+        CarDbContext CarContext = new CarDbContext();
+        public ObservableCollection<Car> cars { get; set; }
 
 
 
         public MainWindow()
         {
             InitializeComponent();
-            Cars = new ObservableCollection<Cars>();
-            CarsContext.Cars.ToList().ForEach(c => Cars.Add(c));
+            cars = new ObservableCollection<Car>();
+            CarContext.Cars.ToList().ForEach(c => cars.Add(c));
             DataContext = this;
         }
 
-        private void TbClear()
+
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            CarMake.Clear();
-            CarModel.Clear();
-            CarYear.Clear();
-            CarStNumber.Clear();
+            if (TbMark.Text == string.Empty && TbModel.Text == string.Empty && TbYear.Text == string.Empty && TbStNumber.Text == string.Empty)
+            {
+                BtnDelete.IsEnabled = false;
+                BtnUpdate.IsEnabled = false;
+            }
+            if (Cars.SelectedItem is not null &&
+                ((TbMark.Text != cars[Cars.SelectedIndex].Mark && TbMark.Text != string.Empty) ||
+                (TbModel.Text != cars[Cars.SelectedIndex].Model && TbModel.Text != string.Empty) ||
+                (TbYear.Text != cars[Cars.SelectedIndex].Year.ToString() && TbYear.Text != string.Empty) ||
+                (TbStNumber.Text != cars[Cars.SelectedIndex].StNumber.ToString() && TbStNumber.Text != string.Empty)))
+                BtnUpdate.IsEnabled = true;
+            else
+                BtnUpdate.IsEnabled = false;
         }
 
         private void Cars_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
-        }
-
-        private void CarMake_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void CarModel_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void CarYear_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void CarStNumber_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void Add_Button(object sender, RoutedEventArgs e)
-        {
-            using(var db = new CarsContext())
+            if (Cars.SelectedItem is not null)
             {
-                List<Cars> cars = new()
-                {
-                    new Cars
-                    {
+                BtnDelete.IsEnabled = true;
 
-                        Make = CarMake.Text,
-                        Model = CarModel.Text,
-                        Year = CarYear.Text,
-                        StNumber = CarStNumber.Text
-                    }
-                    
-                };
-                db.AddRange(cars);
-                db.SaveChanges();
+                TbMark.Text = cars[Cars.SelectedIndex].Mark;
+                TbModel.Text = cars[Cars.SelectedIndex].Model;
+                TbYear.Text = cars[Cars.SelectedIndex].Year.ToString();
+                TbStNumber.Text = cars[Cars.SelectedIndex].StNumber.ToString();
             }
+        }
 
-            if (CarMake.Text is not null && CarModel.Text is not null)
+        private void TbClear()
+        {
+            TbMark.Clear();
+            TbModel.Clear();
+            TbYear.Clear();
+            TbStNumber.Clear();
+        }
+
+
+        private void AddButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (TbMark.Text is not null && TbModel.Text is not null)
             {
-                using (CarsContext database = new())
+                using (CarDbContext database = new())
                 {
 
-
-                    Cars car = new()
+                    Car car = new()
                     {
-                        Model = CarModel.Text,
-                        Mark = CarMake.Text,
-                        Year = CarYear,
-                        StNumber = CarStNumber
+                        Model = TbModel.Text,
+                        Mark = TbMark.Text,
+                        Year = Convert.ToInt32(TbYear.Text),
+                        StNumber = Convert.ToInt32(TbStNumber.Text)
                     };
                     database.Cars.Add(car);
 
                     database.SaveChanges();
 
-                    Cars.Clear();
+                    cars.Clear();
 
-                    CarsContext.Cars.ToList().ForEach(c => cars.Add(c));
+                    CarContext.Cars.ToList().ForEach(c => cars.Add(c));
 
                     TbClear();
 
-
                 }
             }
-
         }
 
-        private void Update_Button(object sender, RoutedEventArgs e)
+        private void BtnUpdate_Click(object sender, RoutedEventArgs e)
         {
+            Car car = null!;
+            using (var database = new CarDbContext())
+            {
 
+                car = database.Cars.FirstOrDefault(c => c.Id == cars[Cars.SelectedIndex].Id)!;
+                if (car is not null)
+                {
+                    car.Mark = TbMark.Text;
+                    car.Model = TbModel.Text;
+                    car.Year = Convert.ToInt32(TbYear.Text);
+                    car.StNumber = Convert.ToInt32(TbStNumber.Text);
+
+                    database.Cars.Update(car);
+
+                    cars.Clear();
+
+                    database.Cars.ToList().ForEach(c => cars.Add(c));
+
+                    database.SaveChanges();
+                }
+
+                TbClear();
+
+            }
         }
 
-        private void Delete_Button(object sender, RoutedEventArgs e)
-        {
 
+
+        private void BtnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            using (CarDbContext database = new())
+            {
+                Car car = database.Cars.FirstOrDefault(c => c.Id == cars[Cars.SelectedIndex].Id)!;
+
+                database.Remove(car);
+                database.SaveChanges();
+
+                TbClear();
+
+                Cars.SelectedItem = null;
+
+                cars.Clear();
+
+                database.Cars.ToList().ForEach(c => cars.Add(c));
+            }
         }
     }
 }
